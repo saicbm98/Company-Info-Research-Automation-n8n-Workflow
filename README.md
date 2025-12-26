@@ -2,9 +2,6 @@
 
 > **Automating company research with intelligent web scraping, LLM analysis, and document generation**
 
-![n8n Workflow Screenshot](./assets/workflow-screenshot.png)
-*Add your n8n canvas screenshot here showing the complete workflow*
-
 ---
 
 ## 🎯 Project Overview
@@ -36,6 +33,11 @@ This project applies the same operational mindset I've used across insurance ana
 ```
 User Input (Form) → Web Scraping → HTML Cleaning → AI Analysis → Document Generation
 ```
+
+### **Workflow Diagram**
+
+![n8n Workflow Screenshot](./assets/workflow-screenshot.png)
+*Complete n8n workflow showing all nodes and connections*
 
 ### **Technical Components**
 

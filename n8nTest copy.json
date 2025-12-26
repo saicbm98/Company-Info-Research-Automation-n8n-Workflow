@@ -1,0 +1,346 @@
+{
+  "name": "n8nTest copy",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -224,
+        592
+      ],
+      "id": "0b34d964-22a1-48b4-bad7-1d307620cf88",
+      "name": "When chat message received",
+      "webhookId": "54831c82-2a17-49c0-a849-7da09017ccf8"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "You are a powerful AI agent. You have access to the following tools:\n-Calculator\n- Think\n\nAlways use think before answering a question.\n\nHere is the user's question or response: {{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "You are a helpful assistant. Before answering always use the Think tool."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        0,
+        592
+      ],
+      "id": "37c4372c-9958-4f92-8b93-2f7335586421",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -32,
+        864
+      ],
+      "id": "5321ab63-d104-4a10-b31c-4c05b8c7cb73",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "yz9RjZ0oUH2Cdk8S",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        64,
+        848
+      ],
+      "id": "8e2785ca-4984-40c3-aa5f-788bec97fc33",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        160,
+        800
+      ],
+      "id": "96a257e6-fcd8-496d-a39b-47a56a442d86",
+      "name": "Calculator"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [
+        256,
+        896
+      ],
+      "id": "ce6527cb-66a1-4798-9354-0b5f169d1c2b",
+      "name": "Think"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.Website }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        368,
+        -272
+      ],
+      "id": "148d9c4e-d70e-4eaa-814d-82441bd5b7b4",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "html": "={{ $json.data }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.markdown",
+      "typeVersion": 1,
+      "position": [
+        576,
+        -272
+      ],
+      "id": "77fc3e8d-0b1f-4673-a15b-1d30e684d40a",
+      "name": "Markdown"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Use the system instructions to summarise this company for outreach.\nCompany URL: {{ $('On form submission').item.json.Website }}\n\nWebsite text (cleaned): {{ $json.data }}\n\nIf leadership or culture details are not in the text, explicitly write \"Not found on website\".\nReturn plain text with the exact headings requested. Headings should be in bold and of bigger font size. \n",
+        "options": {
+          "systemMessage": "You are a website research assistant for job-seeker outreach.\n\nContext\nThe user is job hunting and will use your output to email founders, C-suite, or hiring managers. Your job is to read the provided website text and produce a clear, specific, approachable summary in normal plain text.\n\nNon-negotiables\n- Use ONLY the information present in the provided website text. Do not guess.\n- If something is missing, write \"Not found on website\".\n- Avoid buzzwords and vague marketing language. Translate what the company says into plain English.\n- Prefer concrete details: who they serve, what problem, how it works, product names, features, workflows, industries, proof points (customers, metrics, case studies, pricing, integrations, compliance).\n- Keep it readable, skimmable, and useful for outreach.\n\nOutput format (plain text, with headings)\n1) What they do (core business)\n- 1 sentence one-liner: \"They help X do Y by Z.\"\n- 4 to 10 sentences explaining in simple terms, who it is for, what value it creates.\n\n2) Products and services (specific)\n- List each product/service you can identify.\n- For each: what it is, what it includes (bullets), who uses it (teams/roles), any notable details (integrations, compliance, deployment, pricing signals).\n\n3) Culture and values (only if evidenced)\n- Values or principles stated.\n- Signals from careers page language, operating style, remote/onsite, pace, collaboration, writing culture.\n- Unknowns clearly marked.\n\n4) Founders and leadership (only if evidenced)\n- Names, titles, background highlights.\n- If no names, say \"Not found on website\".\n\n5) Who is an ideal fit here\n- 6 to 12 bullets describing traits and skills that would thrive, grounded in what you saw on the site.\n- If role_title/role_description is provided, tailor this section toward that role.\n\n6) Outreach fuel (make this actionable)\n- Specific outreach angles: 6 to 12 bullets referencing concrete items from the site.\n- Smart questions to ask: 5 to 8 questions tailored to what you read.\n- Email-ready snippets:\n  a) 5 short opener lines (1 to 2 sentences each) that reference something specific from the site.\n  b) 3 subject line options.\n  c) A short draft email (120 to 180 words) with placeholders like [Name], [Role], [1 relevant proof], [1 specific angle], [CTA].\n\nSources\nAt the end, include:\n- \"Sources used:\" and list the page URLs/titles if they were provided, otherwise write \"Sources used: provided website text only\".\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        752,
+        -272
+      ],
+      "id": "588e0468-ad42-4d45-bce5-7edcfae573b3",
+      "name": "AI Agent2"
+    },
+    {
+      "parameters": {
+        "formTitle": "Website Research",
+        "formDescription": "Paste the URL",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Website"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        192,
+        -272
+      ],
+      "id": "fd999fa6-cbbe-4b8e-b439-ec7c0cf8ecf4",
+      "name": "On form submission",
+      "webhookId": "876b65bd-b401-4b38-af54-9f3837080fa7"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "https://docs.google.com/document/d/19K771tNVOaYqOzu_HrYSId_lu2AqrR818yVa6xpqPCw/edit?tab=t.0",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "insert",
+              "text": "={{ $json.output }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        1104,
+        -272
+      ],
+      "id": "80472a20-b393-4dba-95a6-4599708fcfb8",
+      "name": "Update a document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "ZREWkuGDRyUqhoLL",
+          "name": "Google Docs account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        624,
+        -64
+      ],
+      "id": "969530bf-9977-47e6-aaeb-748a1bf5c92b",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "yz9RjZ0oUH2Cdk8S",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculator": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Markdown",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Markdown": {
+      "main": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent2": {
+      "main": [
+        [
+          {
+            "node": "Update a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1887b8ae-d62f-4ef4-bb65-e9182366395b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "195b7323ac4b02d7ba6ac9c40bca6eeea40fe548bb511129f5fbaffbc04e8146"
+  },
+  "id": "D0POZZMNoYDjIS0h",
+  "tags": []
+}

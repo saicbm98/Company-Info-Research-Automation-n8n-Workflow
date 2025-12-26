@@ -36,7 +36,7 @@ User Input (Form) → Web Scraping → HTML Cleaning → AI Analysis → Documen
 
 ### **Workflow Diagram**
 
-![n8n Workflow Screenshot](./assets/workflow-screenshot.png)
+![n8n Workflow Screenshot](https://github.com/saicbm98/Company-Info-Research-Automation-n8n-Workflow/blob/main/Screenshot%202025-12-27%20005128.png?raw=true)
 *Complete n8n workflow showing all nodes and connections*
 
 ### **Technical Components**

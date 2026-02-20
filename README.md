@@ -10,7 +10,7 @@ An end-to-end automation workflow that transforms company website URLs into acti
 
 **The Problem:** Researching companies for job applications is time-consuming and inconsistent. Manually visiting websites, extracting key information, and structuring outreach materials takes 30-45 minutes per company.
 
-**The Solution:** A no-code AI workflow that scrapes company websites, analyzes content using GPT-4o-mini, and generates structured research reports in Google Docs—reducing research time by ~85% (to under 5 minutes per company).
+**The Solution:** A no-code AI workflow that scrapes company websites, analyses content using GPT-4o-mini, and generates structured research reports in Google Docs—reducing research time by ~85% (to under 5 minutes per company).
 
 ---
 
@@ -47,7 +47,7 @@ User Input (Form) → Web Scraping → HTML Cleaning → AI Analysis → Documen
 | **HTTP Request** | `n8n-nodes-base.httpRequest` | Fetches raw HTML from target company website |
 | **Markdown Converter** | `n8n-nodes-base.markdown` | Transforms HTML → clean Markdown for LLM processing |
 | **AI Agent** | `@n8n/n8n-nodes-langchain.agent` | GPT-4o-mini analysis with structured output |
-| **Google Docs** | `n8n-nodes-base.googleDocs` | Appends report to centralized research document |
+| **Google Docs** | `n8n-nodes-base.googleDocs` | Appends report to centralised research document |
 
 ### **AI Agent Output Structure**
 
@@ -99,7 +99,7 @@ This separation ensures consistent AI behavior across all company analyses while
 | **LLM** | OpenAI GPT-4o-mini | Cost-effective natural language analysis |
 | **Web Scraping** | HTTP Request node | Company website data extraction |
 | **Data Transformation** | Markdown node | HTML → clean text conversion |
-| **Output Storage** | Google Docs API | Centralized research repository |
+| **Output Storage** | Google Docs API | Centralised research repository |
 | **Trigger** | Form Trigger (webhook) | User input collection |
 
 ---
@@ -128,7 +128,7 @@ This separation ensures consistent AI behavior across all company analyses while
    - Copy the form URL from the trigger node
    - Submit a company URL and check the Google Doc output
 
-### **Customization Options**
+### **Customisation Options**
 - **Change output format**: Modify AI Agent system message
 - **Add data sources**: Insert additional HTTP Request nodes before AI analysis
 - **Switch LLM provider**: Replace OpenAI node with Anthropic/Gemini
@@ -161,7 +161,7 @@ n8n-research-bot/
 ## 🤝 Connect
 
 **Creator:** Sai Medicherla  
-**Specialties:** AI Operations • Automation Engineering • No-Code AI Solutions
+**Specialties:** AI Operations • AI Automation • No-Code AI Solutions • Business Analysis
 
 **Let's Connect:**
 - 🌐 Portfolio: [linkedin-replacer](https://linkedin-replacer-127790892770.us-west1.run.app/)
@@ -169,7 +169,7 @@ n8n-research-bot/
 - 💼 Wellfound: [Sai Medicherla](https://wellfound.com/u/sai-medicherla)
 - 💻 GitHub: [@saicbm98](https://github.com/saicbm98)
 
-**Open to:** AI Operations • Automation Engineering • Product Operations  
+**Open to:** AI Operations • Automation Engineering • Product Operations • Operations • Business Analysis
 **Availability:** 🟢 Immediate start
 
 ---
